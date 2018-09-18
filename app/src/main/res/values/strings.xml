@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Baidu_Face</string>
     <string name="title_activity_feature_setting">FeatureSettingActivity</string>
+    <string name="title_activity_rgb_video_identity">RgbVideoIdentityActivity</string>
 </resources>

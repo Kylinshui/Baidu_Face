@@ -24,12 +24,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ImageMatchImageActivity" />
         <activity android:name=".RgbDetectActivity" />
-        <activity android:name=".UserGroupManagerActivity"/>
+        <activity android:name=".UserGroupManagerActivity" />
         <activity android:name=".GroupListActivity" />
-        <activity android:name=".UserListActivity"/>
-        <activity android:name=".UserActivity"/>
-        <activity android:name=".AddGroupActivity"/>
+        <activity android:name=".UserListActivity" />
+        <activity android:name=".UserActivity" />
+        <activity android:name=".AddGroupActivity" />
         <activity android:name=".RegActivity" />
+        <activity
+            android:name=".RgbVideoIdentityActivity"
+            android:label="@string/title_activity_rgb_video_identity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
