@@ -54,6 +54,14 @@ public class UserGroupManagerActivity extends AppCompatActivity implements View.
                 startActivity(intent1);
                 break;
             case R.id.user_reg_btn:
+                //用户人脸注册
+                if (groupList.size() == 0) {
+                    Toast.makeText(this, "请先添加分组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent2 = new Intent(this, RegActivity.class);
+                startActivity(intent2);
+
 
                 break;
         }
