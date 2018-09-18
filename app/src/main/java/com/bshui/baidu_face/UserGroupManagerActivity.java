@@ -50,7 +50,8 @@ public class UserGroupManagerActivity extends AppCompatActivity implements View.
 
                 break;
             case R.id.add_group_btn:
-
+                Intent intent1 = new Intent(this,AddGroupActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.user_reg_btn:
 

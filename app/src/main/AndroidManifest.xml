@@ -28,6 +28,7 @@
         <activity android:name=".GroupListActivity" />
         <activity android:name=".UserListActivity"/>
         <activity android:name=".UserActivity"/>
+        <activity android:name=".AddGroupActivity"/>
     </application>
 
 </manifest>
