@@ -1,0 +1,43 @@
+/*
+ * Copyright (C) 2018 Baidu, Inc. All Rights Reserved.
+ */
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            moduleName "facesdk"
+            ldLibs "log"
+            abiFilters "armeabi-v7a" // "armeabi", "x86", "arm64-v8a"
+        }
+
+    }
+
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDir "libs"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26+'
+    implementation project(path: ':orbbec')
+    implementation files('libs/baidu_license.jar')
+    implementation files('libs/FaceSDK.jar')
+    implementation files('libs/online_liantian_3-1-6-3-381_0808.jar')
+}
