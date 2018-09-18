@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bshui.baidu_face">
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,7 +23,11 @@
             android:label="@string/title_activity_feature_setting"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ImageMatchImageActivity" />
-        <activity android:name=".RgbDetectActivity"></activity>
+        <activity android:name=".RgbDetectActivity" />
+        <activity android:name=".UserGroupManagerActivity"/>
+        <activity android:name=".GroupListActivity" />
+        <activity android:name=".UserListActivity"/>
+        <activity android:name=".UserActivity"/>
     </application>
 
 </manifest>

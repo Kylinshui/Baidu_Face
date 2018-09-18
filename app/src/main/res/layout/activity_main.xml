@@ -27,4 +27,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/feature_setting_btn"
         app:layout_constraintTop_toTopOf="@+id/feature_setting_btn" />
+
+    <Button
+        android:id="@+id/user_groud_manager_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="用户及组管理"
+        app:layout_constraintEnd_toEndOf="@+id/feature_setting_btn"
+        app:layout_constraintStart_toStartOf="@+id/feature_setting_btn"
+        app:layout_constraintTop_toBottomOf="@+id/feature_setting_btn" />
 </android.support.constraint.ConstraintLayout>

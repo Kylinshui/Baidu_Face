@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Handler handler;
     private Button featureSetBtn;//特征模型设置
     private Button imageMatchBtn;//图片VS图片
+    private Button userGroundManagerBtn;//用户组管理
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +26,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         handler = new Handler(Looper.getMainLooper());
         featureSetBtn = (Button)findViewById(R.id.feature_setting_btn);
         imageMatchBtn = (Button)findViewById(R.id.image_match_image_btn);
+        userGroundManagerBtn = (Button)findViewById(R.id.user_groud_manager_btn);
+
 
         featureSetBtn.setOnClickListener(this);
         imageMatchBtn.setOnClickListener(this);
+        userGroundManagerBtn.setOnClickListener(this);
 
         PreferencesUtil.initPrefs(this);
         //使用人脸1:n时使用
@@ -79,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.image_match_image_btn:
                 Intent intent1 = new Intent(MainActivity.this,ImageMatchImageActivity.class);
                 startActivity(intent1);
+                break;
+
+            case R.id.user_groud_manager_btn:
+                Intent intent2 = new Intent(MainActivity.this,UserGroupManagerActivity.class);
+                startActivity(intent2);
                 break;
         }
     }
