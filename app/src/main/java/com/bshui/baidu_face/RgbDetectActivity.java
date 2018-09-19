@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.TextureView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.baidu.aip.ImageFrame;
@@ -42,6 +43,7 @@ public class RgbDetectActivity extends Activity {
     private ImageView testView;
     private Handler handler = new Handler();
     private TextView tipTv;
+    private int source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,11 @@ public class RgbDetectActivity extends Activity {
 
         //设置回调,回调人脸检测结果
         addListener();
+
+        Intent intent = getIntent();
+        if(intent != null){
+            source = intent.getIntExtra("source",-1);
+        }
 
     }
 
@@ -215,6 +222,22 @@ public class RgbDetectActivity extends Activity {
     private void saveFace(FaceInfo faceInfo, ImageFrame imageFrame) {
         final Bitmap bitmap = FaceCropper.getFace(imageFrame.getArgb(), faceInfo, imageFrame.getWidth());
 
+        if (source == RegActivity.SOURCE_REG) {
+            // 注册来源保存到注册人脸目录
+            File faceDir = FileUitls.getFaceDirectory();
+            if (faceDir != null) {
+                String imageName = UUID.randomUUID().toString();
+                File file = new File(faceDir, imageName);
+                // 压缩人脸图片至300 * 300，减少网络传输时间
+                ImageUtils.resize(bitmap, file, 300, 300);
+                Intent intent = new Intent();
+                intent.putExtra("file_path", file.getAbsolutePath());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            } else {
+                toast("注册人脸目录未找到");
+            }
+        } else {
             try {
                 // 其他来源保存到临时目录
                 final File file = File.createTempFile(UUID.randomUUID().toString() + "", ".jpg");
@@ -227,7 +250,17 @@ public class RgbDetectActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
+    }
+
+    private void toast(final String text) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RgbDetectActivity.this, text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
