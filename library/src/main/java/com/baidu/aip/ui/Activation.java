@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ReplacementTransformationMethod;
@@ -105,7 +106,7 @@ public class Activation {
 
         TextView titleTv = new TextView(context);
         titleTv.setText("设备激活");
-        titleTv.setTextSize(dip2px(15));
+       // titleTv.setTextSize(dip2px(15));
         titleTv.setTextColor(context.getResources().getColor(R.color.black));
 
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
@@ -120,7 +121,7 @@ public class Activation {
         deviceIdTv = new TextView(context);
         deviceIdTv.setTextIsSelectable(true);
         deviceIdTv.setText("设备指纹："+device);
-        deviceIdTv.setTextSize(dip2px(12));
+       // deviceIdTv.setTextSize(dip2px(12));
         deviceIdTv.setTextColor(context.getResources().getColor(R.color.black));
 
         LinearLayout.LayoutParams deviceIdParams = new LinearLayout.LayoutParams(
@@ -153,7 +154,7 @@ public class Activation {
         activateBtn = new Button(context);
         // activateBtn.setId(100);
         activateBtn.setText("在线激活");
-        activateBtn.setTextSize(dip2px(12));
+       // activateBtn.setTextSize(dip2px(12));
         activateBtn.setTextColor(context.getResources().getColor(R.color.white));
         activateBtn.setBackgroundColor(context.getResources().getColor(R.color.buttonColor));
 
@@ -163,8 +164,10 @@ public class Activation {
         activateParamsone.rightMargin = dip2px(20);
         activateParamsone.leftMargin = dip2px(60);
         tvOnLineText = new TextView(context);
-        tvOnLineText.setText("在线激活:输入序列号，保持设备联网，SDK会自动进行激活");
-        tvOnLineText.setTextSize(dip2px(8));
+        tvOnLineText.setSingleLine(false);
+        tvOnLineText.setText("在线激活:输入序列号，保持设备联网，SDK会\n自动进行激活");
+
+      //  tvOnLineText.setTextSize(dip2px(8));
         tvOnLineText.setTextColor(context.getResources().getColor(R.color.black));
 
 
@@ -176,7 +179,7 @@ public class Activation {
         btOffLineActive = new Button(context);
         // activateBtn.setId(100);
         btOffLineActive.setText("离线激活");
-        btOffLineActive.setTextSize(dip2px(12));
+        //btOffLineActive.setTextSize(dip2px(12));
         btOffLineActive.setTextColor(context.getResources().getColor(R.color.white));
         btOffLineActive.setBackgroundColor(context.getResources().getColor(R.color.buttonColor));
 
@@ -185,10 +188,12 @@ public class Activation {
         tvOffLineParams.gravity = Gravity.CENTER;
         tvOffLineParams.topMargin = dip2px(8);
         tvOffLineParams.rightMargin = dip2px(20);
-        tvOffLineParams.leftMargin = dip2px(20);
+        tvOffLineParams.leftMargin = dip2px(60);
         tvOffLineText = new TextView(context);
-        tvOffLineText.setText("离线激活:将激活文件置于SD卡根目录（/storage/emulated/0）中，SDK会自动进行激活");
-        tvOffLineText.setTextSize(dip2px(8));
+        tvOnLineText.setSingleLine(false);
+        tvOffLineText.setText("离线激活:将激活文件置于SD卡根目录\n（/storage/emulated/0）中，SDK会自动进行激活");
+        //tvOffLineText.setTextSize(dip2px(8));
+
         tvOffLineText.setTextColor(context.getResources().getColor(R.color.black));
 
         LinearLayout.LayoutParams backParams = new LinearLayout.LayoutParams(dip2px(180), dip2px(40));
@@ -202,7 +207,7 @@ public class Activation {
         backBtn.setText("返      回");
         backBtn.setTextColor(context.getResources().getColor(R.color.white));
         backBtn.setBackgroundColor(context.getResources().getColor(R.color.buttonColor));
-        backBtn.setTextSize(dip2px(12));
+       // backBtn.setTextSize(dip2px(12));
 
         root.addView(titleTv, titleParams);
         root.addView(deviceIdTv, deviceIdParams);
@@ -386,7 +391,6 @@ public class Activation {
             }
         });
     }
-
 
 
     private int dip2px(int dip) {
