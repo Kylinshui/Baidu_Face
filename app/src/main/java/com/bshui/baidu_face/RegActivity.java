@@ -96,6 +96,9 @@ public class RegActivity extends Activity implements View.OnClickListener {
         submitButton = (Button) findViewById(R.id.submit_btn);
         submitButton.setVisibility(View.GONE);
 
+        avatarIv.setImageResource(R.drawable.avatar);
+
+
         autoDetectBtn.setOnClickListener(this);
         fromAlbumButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
