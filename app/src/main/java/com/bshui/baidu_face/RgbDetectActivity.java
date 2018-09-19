@@ -4,6 +4,12 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Handler;
 
 import android.os.Bundle;
@@ -18,6 +24,7 @@ import com.baidu.aip.ImageFrame;
 import com.baidu.aip.face.CameraImageSource;
 import com.baidu.aip.face.FaceCropper;
 import com.baidu.aip.face.FaceDetectManager;
+import com.baidu.aip.face.FaceFilter;
 import com.baidu.aip.face.PreviewView;
 import com.baidu.aip.face.camera.CameraView;
 import com.baidu.aip.face.camera.ICameraControl;
@@ -127,7 +134,7 @@ public class RgbDetectActivity extends Activity {
                     }
                 });
                 checkFace(retCode, infos, frame);
-               // showFrame(frame, infos);
+                showFrame(frame, infos);
 
             }
         });
@@ -261,6 +268,155 @@ public class RgbDetectActivity extends Activity {
                 Toast.makeText(RgbDetectActivity.this, text, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private Paint paint = new Paint();
+
+    {
+        paint.setColor(Color.YELLOW);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setTextSize(30);
+    }
+
+    RectF rectF = new RectF();
+
+    /**
+     * 绘制人脸框。
+     *
+     */
+    private void showFrame(ImageFrame imageFrame, FaceInfo[] faceInfos) {
+        Canvas canvas = textureView.lockCanvas();
+        if (canvas == null) {
+            textureView.unlockCanvasAndPost(canvas);
+            return;
+        }
+        if (faceInfos == null || faceInfos.length == 0) {
+            // 清空canvas
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            textureView.unlockCanvasAndPost(canvas);
+            return;
+        }
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
+        FaceInfo faceInfo = faceInfos[0];
+
+
+        rectF.set(getFaceRect(faceInfo, imageFrame));
+
+        // 检测图片的坐标和显示的坐标不一样，需要转换。
+        previewView.mapFromOriginalRect(rectF);
+
+        float yaw  = Math.abs(faceInfo.headPose[0]);
+        float patch  = Math.abs(faceInfo.headPose[1]);
+        float roll  = Math.abs(faceInfo.headPose[2]);
+        if (yaw > 20 || patch > 20 || roll > 20) {
+            // 不符合要求，绘制黄框
+            paint.setColor(Color.YELLOW);
+
+            String text = "请正视屏幕";
+            float width = paint.measureText(text) + 50;
+            float x = rectF.centerX() - width / 2;
+            paint.setColor(Color.RED);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawText(text, x + 25, rectF.top - 20, paint);
+            paint.setColor(Color.YELLOW);
+
+        } else {
+            // 符合检测要求，绘制绿框
+            paint.setColor(Color.GREEN);
+        }
+        paint.setStyle(Paint.Style.STROKE);
+
+        // 绘制框
+        canvas.drawRect(rectF, paint);
+        textureView.unlockCanvasAndPost(canvas);
+    }
+
+    /**
+     * 绘制人脸框。
+     *
+     * @param model 追踪到的人脸
+     */
+    private void showFrame(FaceFilter.TrackedModel model) {
+        Canvas canvas = textureView.lockCanvas();
+        if (canvas == null) {
+            return;
+        }
+        // 清空canvas
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
+        if (model != null) {
+            model.getImageFrame().retain();
+            rectF.set(model.getFaceRect());
+
+            // 检测图片的坐标和显示的坐标不一样，需要转换。
+            previewView.mapFromOriginalRect(rectF);
+            if (model.meetCriteria()) {
+                // 符合检测要求，绘制绿框
+                paint.setColor(Color.GREEN);
+            } else {
+                // 不符合要求，绘制黄框
+                paint.setColor(Color.YELLOW);
+
+                String text = "请正视屏幕";
+                float width = paint.measureText(text) + 50;
+                float x = rectF.centerX() - width / 2;
+                paint.setColor(Color.RED);
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawText(text, x + 25, rectF.top - 20, paint);
+                paint.setColor(Color.YELLOW);
+            }
+            paint.setStyle(Paint.Style.STROKE);
+            // 绘制框
+            canvas.drawRect(rectF, paint);
+        }
+        textureView.unlockCanvasAndPost(canvas);
+    }
+
+    /**
+     * 获取人脸框区域。
+     *
+     * @return 人脸框区域
+     */
+    // TODO padding?
+    public Rect getFaceRect(FaceInfo faceInfo, ImageFrame frame) {
+        Rect rect = new Rect();
+        int[] points = new int[8];
+        faceInfo.getRectPoints(points);
+
+        int left = points[2];
+        int top = points[3];
+        int right = points[6];
+        int bottom = points[7];
+
+        //            int width = (right - left) * 4 / 3;
+        //            int height = (bottom - top) * 4 / 3;
+        //
+        //            left = getInfo().mCenter_x - width / 2;
+        //            top = getInfo().mCenter_y - height / 2;
+        //
+        //            rect.top = top;
+        //            rect.left = left;
+        //            rect.right = left + width;
+        //            rect.bottom = top + height;
+
+        //            int width = (right - left) * 4 / 3;
+        //            int height = (bottom - top) * 5 / 3;
+        int width = (right - left);
+        int height = (bottom - top);
+
+        //            left = getInfo().mCenter_x - width / 2;
+        //            top = getInfo().mCenter_y - height * 2 / 3;
+        left = (int) (faceInfo.mCenter_x - width / 2);
+        top = (int) (faceInfo.mCenter_y - height  / 2);
+
+
+        rect.top = top < 0 ? 0 : top;
+        rect.left = left < 0 ? 0 : left;
+        rect.right = (left + width) > frame.getWidth() ? frame.getWidth() : (left + width) ;
+        rect.bottom = (top + height) > frame.getHeight() ? frame.getHeight() : (top + height);
+
+        return rect;
     }
 
 

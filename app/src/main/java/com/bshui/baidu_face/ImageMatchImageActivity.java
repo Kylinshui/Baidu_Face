@@ -81,28 +81,31 @@ public class ImageMatchImageActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()){
             case R.id.first_pick_from_photo:
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_PHOTO_FIRST);
+                scoreIv.setText("");
             break;
 
             case R.id.first_pick_from_video:
                 //当前活体策略:无活体,或RGB活体
                 Intent intent3 = new Intent(this,RgbDetectActivity.class);
                 startActivityForResult(intent3,PICK_VIDEO_FIRST);
-
+                scoreIv.setText("");
             break;
 
             case R.id.second_pick_from_photo:
                 Intent intent1 = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent1,PICK_PHOTO_SECOND);
+                scoreIv.setText("");
             break;
 
             case R.id.second_pick_from_video:
                 intent = new Intent(this, RgbDetectActivity.class);
                 startActivityForResult(intent, PICK_VIDEO_SECOND);
-
+                scoreIv.setText("");
             break;
 
             case R.id.compare_btn:
